@@ -5,7 +5,6 @@ import 'home_widget.dart';
 Future<void> main() async {
   // Obtain a list of the available cameras on the device.
   final cameras = await availableCameras();
-  print("THIS IS THE SIZE: ${cameras.length}");
 
   runApp(MyApp(cameras: cameras));
 }
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'My Flutter App',
+      title: 'Kira',
       home: Home(cameras: cameras),
     );
   }

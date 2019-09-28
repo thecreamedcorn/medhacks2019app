@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:path/path.dart' show join;
 import 'package:path_provider/path_provider.dart';
 import 'package:positioned_tap_detector/positioned_tap_detector.dart';
@@ -140,18 +141,39 @@ class CameraPageState extends State<CameraPage> {
 }
 
 // A widget that displays the picture taken by the user.
-class DisplayPictureScreen extends StatelessWidget {
+class DisplayPictureScreen extends StatefulWidget {
   final String imagePath;
 
   const DisplayPictureScreen({Key key, this.imagePath}) : super(key: key);
 
+  @override
+  _DisplayPictureScreen createState() {
+    return _DisplayPictureScreen();
+  }
+}
+
+class _DisplayPictureScreen extends State<DisplayPictureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Display the Picture')),
       // The image is stored as a file on the device. Use the `Image.file`
       // constructor with the given path to display the image.
-      body: Image.file(File(imagePath)),
+      body: new Center(
+        child: new AspectRatio(
+          aspectRatio: 1,
+          child: new Container(
+            decoration: new BoxDecoration(
+              image: new DecorationImage(
+                fit: BoxFit.fitWidth,
+                alignment: FractionalOffset.center,
+                image: Image.file(File(widget.imagePath)).image,
+              )
+            ),
+          ),
+        )
+      )
     );
   }
+
 }
