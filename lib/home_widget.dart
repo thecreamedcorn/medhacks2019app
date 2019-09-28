@@ -1,7 +1,16 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'camera_page.dart';
 import 'tab_change1.dart';
 
 class Home extends StatefulWidget {
+  final List<CameraDescription> cameras;
+
+  const Home({
+    Key key,
+    @required this.cameras,
+  }) : super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return _HomeState();
@@ -9,10 +18,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<Widget> _children;
   int _currentIndex = 0;
-  final List<Widget> _children = [TabChange1(Colors.white),
-    TabChange1(Colors.blue),
-    TabChange1(Colors.red)];
+
+  @override
+  void initState() {
+    _children = [
+      TabChange1(Colors.white),
+      CameraPage(cameras: widget.cameras),
+      TabChange1(Colors.red)
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
