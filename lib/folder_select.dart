@@ -29,12 +29,51 @@ class _FolderSelectState extends State<FolderSelect> {
       appBar: AppBar(
         title: Text('Select Folder'),
       ),
-//      body: FutureBuilder(
-//        future: _foldersFuture,
-//        builder: (context, snapshot) {
-//          return List.bu
-//        },
-//      )
+      body: FutureBuilder(
+        future: _foldersFuture,
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            default:
+              //var list = snapshot.data;
+              var list = <String> [
+                "one",
+                "two",
+                "three",
+                "four",
+              ];
+              return ListView.builder(
+                itemCount: list.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return SizedBox(
+                    width: double.infinity,
+                    child: Card(
+                      elevation: 2,
+                      child: InkWell(
+                        onTap: () => Navigator.pop(context, list[index]),
+                        child: Container(
+                          padding: EdgeInsets.all(20),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Row(
+                              children: <Widget>[
+                                Icon(Icons.folder),
+                                Text(list[index])
+                              ]
+                            )
+                          )
+                        )
+                      )
+                    )
+                  );
+                }
+              );
+          }
+        },
+      )
     );
   }
 

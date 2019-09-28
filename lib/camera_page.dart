@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:medhacks2019app/folder_select.dart';
+import 'package:medhacks2019app/trial_select.dart';
 
 import 'globals.dart';
 
@@ -247,13 +248,30 @@ class _DisplayPictureScreen extends State<DisplayPictureScreen> {
                           ButtonTheme (
                             minWidth: double.infinity,
                             child: MaterialButton(
-                              onPressed: () {
-                                Navigator.push(
+                              onPressed: () async {
+                                var json = new Map<String, dynamic>();
+                                json['folder'] = await Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => FolderSelect()
                                   )
                                 );
+                                if (json['folder'] == null) return;
+
+                                if (widget.study == null) {
+                                  json['study'] = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => TrialSelect()
+                                    )
+                                  );
+                                } else {
+                                  json['study'] = widget.study;
+                                }
+
+                                //TODO push http request
+
+                                Navigator.pop(context, null);
                               },
                               color: Colors.lightBlue,
                               child: Text("Choose Folder and Submit")
