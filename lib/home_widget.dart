@@ -1,7 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'camera_page.dart';
-import 'tab_change1.dart';
+import 'package:medhacks2019app/bottom_navigation.dart';
+import 'package:medhacks2019app/camera_page.dart';
+import 'package:medhacks2019app/images_page.dart';
+import 'package:medhacks2019app/trials_page.dart';
 
 class Home extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -18,49 +20,71 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Widget> _children;
-  int _currentIndex = 0;
+  Map<TabItem, GlobalKey<NavigatorState>> _navigatorKeys = {
+    TabItem.images: GlobalKey<NavigatorState>(),
+    TabItem.camera: GlobalKey<NavigatorState>(),
+    TabItem.trials: GlobalKey<NavigatorState>(),
+  };
+  TabItem _currentTab = TabItem.images;
 
   @override
   void initState() {
-    _children = [
-      TabChange1(Colors.white),
-      CameraPage(cameras: widget.cameras),
-      TabChange1(Colors.red)
-    ];
+  }
+
+  void _selectTab(TabItem tabItem) {
+    if (tabItem == _currentTab && _navigatorKeys.containsKey(tabItem)) {
+      // pop to first route
+      _navigatorKeys[tabItem].currentState.popUntil((route) => route.isFirst);
+    } else {
+      setState(() => _currentTab = tabItem);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Kira'),
-      ),
-      body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: onTabTapped,
-        currentIndex: _currentIndex, // this will be set when a new tab is tapped
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.folder),
-            title: new Text('Images'),
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.camera_alt),
-            title: new Text('Camera'),
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.format_color_fill),
-              title: Text('Trials')
-          )
-        ],
-      ),
-    );
-  }
+    return WillPopScope(
+      onWillPop: () async {
+        final isFirstRouteInCurrentTab = await _navigatorKeys[_currentTab].currentState.maybePop();
 
-  void onTabTapped(int index){
-    setState(() {
-      _currentIndex = index;
-    });
+        if (isFirstRouteInCurrentTab) {
+          // if not on the 'main' tab
+          if (_currentTab != TabItem.images) {
+            // select 'main' tab
+            _selectTab(TabItem.images);
+            // back button handled by app
+            return false;
+          }
+        }
+        // let system handle back button if we're on the first route
+        return isFirstRouteInCurrentTab;
+      },
+      child: Scaffold(
+        body: Stack(children: <Widget>[
+          Offstage(
+            offstage: _currentTab != TabItem.images,
+            child: ImagesPage(
+              navigatorKey: _navigatorKeys[TabItem.images],
+            ),
+          ),
+          Offstage(
+            offstage: _currentTab != TabItem.camera,
+            child: CameraPage(
+              cameras: widget.cameras,
+              navigatorKey: _navigatorKeys[TabItem.camera],
+            ),
+          ),
+          Offstage(
+            offstage: _currentTab != TabItem.trials,
+            child: TrialsPage(
+              navigatorKey: _navigatorKeys[TabItem.trials],
+            ),
+          ),
+        ]),
+        bottomNavigationBar: BottomNavigation(
+          currentTab: _currentTab,
+          onSelectTab: _selectTab,
+        ),
+      )
+    );
   }
 }

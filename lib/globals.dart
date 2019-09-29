@@ -1,2 +1,1 @@
-var apiUrl = "http://the_server/api";
-var userId = "wil";
+var apiUrl = "http://kira-254322.appspot.com/api";
