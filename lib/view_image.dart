@@ -25,7 +25,7 @@ class ViewImage extends StatelessWidget {
           child: Container(
             decoration: BoxDecoration(
               image: DecorationImage(
-                fit: BoxFit.fill,
+                fit: BoxFit.contain,
                 alignment: FractionalOffset.center,
                 image: Image.file(File(path)).image,
               )

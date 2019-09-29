@@ -61,10 +61,10 @@ class _FolderImagesState extends State<FolderImages> {
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                 ),
-                //imageCount: list.length,
+                itemCount: list.length,
                 itemBuilder: (context, index) {
                   PathAndDate imageData = list[index];
-                  ImageProvider image = new AssetImage(imageData.path);
+                  ImageProvider image = new FileImage(new File(imageData.path));
                   return Container(
                     child: InkWell(
                       onTap: () {
@@ -117,11 +117,15 @@ class _FolderImagesState extends State<FolderImages> {
   }
 
   Future<List<PathAndDate>> _getImages() async {
-    final String url = apiUrl + "/photosFromFolder?name=" + widget.folder;
-    final request = await http.post(url);
+    final String url = apiUrl + "/photosFromFolder/";
+    final Map<String, String> headers = {"Content-type": "application/json"};
+    final Map body = {
+      'name': widget.folder,
+    };
+    final request = await http.post(url, headers: headers, body: json.encode(body));
     if (request.statusCode == 200) {
       var pathsAndDates = new List<PathAndDate>();
-      for (var imageAndDate in (json.decode(request.body) as List<Map<String, dynamic>>)) {
+      for (var imageAndDate in (json.decode(request.body) as List)) {
         final path = join((await getTemporaryDirectory()).path, '${DateTime.now()}.png');
         File(path).writeAsBytes(base64.decode(imageAndDate['photo']));
         final date = DateTime.parse(imageAndDate['date']);
