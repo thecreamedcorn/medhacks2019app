@@ -79,7 +79,6 @@ class _TrialSelectState extends State<TrialSelect> {
     final String url = apiUrl + "/getTrials/";
     final response = await http.post(url);
     if (response.statusCode == 200) {
-      print("BODY: " + response.body);
       return json.decode(response.body) as List;
     } else {
       throw Exception();

@@ -66,6 +66,7 @@ class _FolderSelectState extends State<FolderSelect> {
                           child: Row(
                             children: <Widget>[
                               Icon(Icons.folder),
+                              SizedBox(width: 20),
                               Text(_folders[index])
                             ]
                           )

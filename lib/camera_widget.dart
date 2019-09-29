@@ -105,8 +105,8 @@ class CameraWidgetState extends State<CameraWidget> {
           )
         ),
         Positioned(
-          bottom: 30,
-          right: 30,
+          bottom: 15,
+          right: 15,
           child: FloatingActionButton(
             child: Icon(Icons.camera_alt),
             // Provide an onPressed callback.
@@ -168,7 +168,7 @@ class DisplayPictureScreen extends StatefulWidget {
 }
 
 class _DisplayPictureScreen extends State<DisplayPictureScreen> {
-  Future<Map<String, dynamic>> _verifyingImageFuture;
+  Future<Map> _verifyingImageFuture;
 
   @override
   void initState() {
@@ -204,7 +204,7 @@ class _DisplayPictureScreen extends State<DisplayPictureScreen> {
             future: _verifyingImageFuture,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                Map<String, dynamic> data = snapshot.data;
+                Map data = snapshot.data;
                 final bool valid = data['valid'];
                 final classification = valid ? data['photo']['photo']['classification'] : null;
                 return Container(
@@ -259,7 +259,7 @@ class _DisplayPictureScreen extends State<DisplayPictureScreen> {
                                   SizedBox(height: 10),
                                   Align(
                                     alignment: Alignment.centerLeft,
-                                    child: Text("The photo that was submitted is not a valid image of a lesion.",
+                                    child: Text('Failure: ' + data['reason'],
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                           color: Colors.red
@@ -356,7 +356,7 @@ class _DisplayPictureScreen extends State<DisplayPictureScreen> {
     );
   }
 
-  Future<Map<String, dynamic>> _verifyImage() async {
+  Future<Map> _verifyImage() async {
     final b64Image = base64.encode(await (new File(widget.imagePath)).readAsBytes());
     final url = apiUrl + "/analyzePhoto/";
     final Map<String, String> headers = {"Content-type": "application/json"};

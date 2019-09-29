@@ -19,12 +19,44 @@ class TrialDisplay extends StatelessWidget {
       appBar: AppBar(
         title: new Text("Inspect Trial")
       ),
-      body: Column(
-        children: <Widget>[
-          Text("Name: " + data['name']),
-          Text("Contact: " + data['contact']),
-          Text("Description: " + data['description']),
-        ]
+      body: Container(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              width: double.infinity,
+              child: Card(
+                elevation: 2,
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  child: Text(data['name'],
+                    style: TextStyle(
+                      fontSize: 25
+                    )
+                  )
+                ),
+              )
+            ),
+            SizedBox(height: 15),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Contact: " + data['contact'],
+                  textAlign: TextAlign.left,
+                  style: TextStyle(fontSize: 20),
+              ),
+            ),
+            SizedBox(height: 5),
+            Row(children: <Widget>[Expanded(child: Divider())]),
+            SizedBox(height: 5),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text("Description: " + data['description'],
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ]
+        )
       )
     );
 

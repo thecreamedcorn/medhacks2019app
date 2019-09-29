@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:medhacks2019app/view_image.dart';
 import 'package:path/path.dart' show join;
 import 'package:medhacks2019app/globals.dart';
 import 'package:path_provider/path_provider.dart';
@@ -65,33 +66,43 @@ class _FolderImagesState extends State<FolderImages> {
                   PathAndDate imageData = list[index];
                   ImageProvider image = new AssetImage(imageData.path);
                   return Container(
-                    child: Stack(
-                      alignment: Alignment.bottomCenter,
-                      children: <Widget>[
-                        FadeInImage(
-                          image: image,
-                          placeholder: MemoryImage(kTransparentImage),
-                          fit: BoxFit.cover,
-                          width: double.infinity,
-                          height: double.infinity,
-                        ),
-                        Container(
-                          color: Colors.black.withOpacity(0.7),
-                          height: 30,
-                          width: double.infinity,
-                          child: Center(
-                            child: Text(imageData.date.toString(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontFamily: 'Regular'
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewImage(date: imageData.date.toString(), path: imageData.path),
+                          ),
+                        );
+                      },
+                      child: Stack(
+                        alignment: Alignment.bottomCenter,
+                        children: <Widget>[
+                          FadeInImage(
+                            image: image,
+                            placeholder: MemoryImage(kTransparentImage),
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                          ),
+                          Container(
+                            color: Colors.black.withOpacity(0.7),
+                            height: 30,
+                            width: double.infinity,
+                            child: Center(
+                              child: Text(imageData.date.toString(),
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontFamily: 'Regular'
+                                ),
                               ),
                             ),
-                          ),
-                        )
-                      ],
+                          )
+                        ],
+                      )
                     )
                   );
                 }

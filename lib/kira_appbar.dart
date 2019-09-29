@@ -19,11 +19,15 @@ AppBar kiraAppBar(BuildContext context) {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text("User Code"),
-                content: Column(
-                  children: <Widget>[
-                    Text('Email: wgaboury@gmail.com'),
-                    Text('ID: a57u8bw57nt7n83'),
-                  ],
+                content: Container(
+                  width: double.maxFinite,
+                  height: 35,
+                  child: ListView(
+                    children: <Widget>[
+                      Text('Email: wgaboury@gmail.com'),
+                      Text('ID: a57u8bw57nt7n83'),
+                    ],
+                  )
                 ),
                 actions: <Widget>[
                   FlatButton(
