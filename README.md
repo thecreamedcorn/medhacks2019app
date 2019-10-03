@@ -1,16 +1,7 @@
 # medhacks2019app
 
-medhacks app for 2019
+Front end for medhacks app that I helped make
 
-## Getting Started
+## What It Does
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This is the frontend for an app that helps to make any dermotology related clinical trials easier. It lets the people participating take images of the areas of their skin being studied to the people administering the trial. I worked mostly on the front end mobile app but also helped with the backend for this app. The app is planned to have machine vision features for detecting issues and giving automatic statistics on the dermatology issues in each picture.
